@@ -10,6 +10,7 @@
 <body>
     
     <div>
+        <h1>Total: <span id="total"></span></h1>
         <button id='btn'> incrementar </button>
     </div>
 
@@ -31,16 +32,15 @@
             return {type: REDUZIR}
         }
 
-        const initialState = 10;
+        const initialState = 1;
 
         function reducer(state = initialState, action) {
-            console.log(action);
             switch (action.type){
                 case SOMAR:
                     return state + action.payload
                 case INCREMENTAR:
                     return state + 1
-                case INCREMENTAR:
+                case REDUZIR:
                     return state - 1
                     
                 default:
@@ -48,11 +48,22 @@
             }
         }
         const store = Redux.createStore(reducer)
-        store.dispatch( somar() )
-        store.dispatch( incrementar() )
         
-        const state = store.getState();
-        console.log(state)
+        function render(){
+            const state = store.getState();
+            
+            const total = document.getElementById('total');
+            total.innerHTML = state;
+        }
+        render()
+
+        store.subscribe(render)
+        const unsubcribe = store.subscribe(() => {
+            console.log("teste")
+        })
+        store.dispatch(reduzir())
+
+        unsubcribe()
 
         const btn = document.getElementById('btn');
         btn.addEventListener('click', () => store.dispatch( incrementar() ))
