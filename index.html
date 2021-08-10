@@ -9,18 +9,53 @@
 </head>
 <body>
     
+    <div>
+        <button id='btn'> incrementar </button>
+    </div>
+
     <script>
-        const initialState = {
-                nome: 'Vander',
-                id: 199
-            };
-            
+        // Constantes
+        const INCREMENTAR = 'INCREMENTAR'
+        const REDUZIR = 'REDUZIR'
+        const SOMAR = 'SOMAR'
+
+        // Actions creations
+        function incrementar(){
+            return {type: INCREMENTAR}
+        }
+        function somar(payload){
+            !!payload ? payload : payload = 0;
+            return {type: SOMAR, payload}
+        }
+        function reduzir(){
+            return {type: REDUZIR}
+        }
+
+        const initialState = 10;
+
         function reducer(state = initialState, action) {
-            return state;
+            console.log(action);
+            switch (action.type){
+                case SOMAR:
+                    return state + action.payload
+                case INCREMENTAR:
+                    return state + 1
+                case INCREMENTAR:
+                    return state - 1
+                    
+                default:
+                    return state 
+            }
         }
         const store = Redux.createStore(reducer)
+        store.dispatch( somar() )
+        store.dispatch( incrementar() )
+        
         const state = store.getState();
-        console.log(state.nome)
+        console.log(state)
+
+        const btn = document.getElementById('btn');
+        btn.addEventListener('click', () => store.dispatch( incrementar() ))
 
     </script>
 </body>
