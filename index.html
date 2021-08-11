@@ -12,6 +12,10 @@
     <div>
         <h1>Total: <span id="total"></span></h1>
         <button id='btn'> incrementar </button>
+        <button id='btn2'> reduzir </button>
+        <button id='btn3'> SOMA 30 </button>
+        <button id='btn4'> Mostrar </button>
+        <button id='btn5'>  Esconder </button>
     </div>
 
     <script>
@@ -32,28 +36,50 @@
             return {type: REDUZIR}
         }
 
-        const initialState = 1;
+        function abrir(){
+            return { type: 'ABRIR'}
+        }
 
-        function reducer(state = initialState, action) {
+        const initialState = 1;
+        function contador(state = initialState, action) {
             switch (action.type){
                 case SOMAR:
                     return state + action.payload
                 case INCREMENTAR:
                     return state + 1
                 case REDUZIR:
-                    return state - 1
-                    
+                    return state - 1 
                 default:
                     return state 
             }
         }
+
+        function modal(state = false, action) {
+            switch (action.type) {
+                case 'ABRIR':
+                    return true;
+                case 'FECHAR':
+                    return false;
+                default:
+                    return state;
+            }
+        }
+
+        const reducer = Redux.combineReducers({ contador, modal })
+
         const store = Redux.createStore(reducer)
         
         function render(){
-            const state = store.getState();
+            const {contador, modal} = store.getState();
             
             const total = document.getElementById('total');
-            total.innerHTML = state;
+            total.innerHTML = contador;
+
+            if (modal) {
+                total.style.display = 'inline-block';
+            } else {
+                total.style.display = 'none';
+            }
         }
         render()
 
@@ -61,12 +87,14 @@
         const unsubcribe = store.subscribe(() => {
             console.log("teste")
         })
-        store.dispatch(reduzir())
-
         unsubcribe()
 
         const btn = document.getElementById('btn');
         btn.addEventListener('click', () => store.dispatch( incrementar() ))
+        btn2.addEventListener('click', () => store.dispatch( reduzir() ))
+        btn3.addEventListener('click', () => store.dispatch( somar(30) ))
+        btn4.addEventListener('click', () => store.dispatch( abrir() ))
+        btn5.addEventListener('click', () => store.dispatch( { type: 'FECHAR'} ))
 
     </script>
 </body>
