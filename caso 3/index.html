@@ -13,57 +13,15 @@
        
     </div>
 
-    <script>
-        // const array1 = [0, 1, 2, 3, 4];
-        // const array2 = array1.filter(item => item > 2)
-        
-        // // console.log(array1)
-        // // console.log(array2)
-        // // console.log(array2 === array1)
+    <script type="module">
+        import store from './store/configureStore.js';
+        import {incrementar} from './store/contador.js'
 
-        // const obj1 = {
-        //     nome: 'Vander',
-        //     idade: 26
-        // }
+        store.subscribe(() => {
+            console.log('Funcionou');
+        })
 
-        // const obj2 = immer.produce(obj1, (draft) => {
-        //     draft.idade = 35
-        // })
-
-        // console.log(obj2)
-        // console.log(obj1)
-
-        //const obj2 = Object.assign({}, obj1, {nome: 'José'});
-        //const obj2 = {...obj1, nome: 'José'};
-        // let obj2 = obj1;
-        // obj2.nome = 'José'
-        // console.log(obj1 === obj2)
-        // console.log(obj1)
-        // console.log(obj2)
-
-
-
-        const initialState = {
-            nome: 'Vander',
-            idade: 26
-        }
-
-        const reducer = immer.produce((state, action) => {
-            switch (action.type) {
-                case 'MUDAR_NOME':
-                    state.nome = action.payload
-                    break
-                    //return {...state, nome: action.payload};
-                default:
-                    return state;
-            }
-        }, initialState);
-
-        const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-
-        store.dispatch({ type: 'MUDAR_NOME', payload: 'José'})
-        store.dispatch({ type: 'MUDAR_NOME', payload: 'Ribamar'})
-
+        store.dispatch(incrementar());
     </script>
 </body>
 </html>
