@@ -1,21 +1,31 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 
+const incrementar = () => ({ type: 'INCREMENTAR' });
+const reduzir = () => ({ type: 'REDUZIR' });
 
-const App = () => {
-  const state = useSelector((state) => state);
-  const dispatch = useDispatch();
-
+const App = ({ contador, incrementar, reduzir}) => {
+  
   return (
     <div>
-      <h1>Total:  {state}</h1>
-      <button onClick={() => dispatch({ type: 'INCREMENTAR' })}>
+      <h1> Total: {contador}</h1>
+      <button onClick={incrementar}>
         Incrementar
-      </button><button onClick={() => dispatch({ type: 'REDUZIR' })}>
+      </button>
+      <button onClick={reduzir} >
         Reduzir
       </button>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return { contador: state };
+};
+
+const mapDispatchToProps = {
+  incrementar,
+  reduzir
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
