@@ -1,7 +1,7 @@
 import React from 'react';
-import { useDispatch} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { somar } from './store/contador';
-import { login } from './store/login';
+import { autoLogin, login } from './store/login';
 
 
 const App = () => {
@@ -9,6 +9,12 @@ const App = () => {
   const [password, setPassword] = React.useState('')
 
   const dispatch = useDispatch()
+  
+  React.useEffect(() => {
+    dispatch(autoLogin());
+  }, [dispatch])
+
+  const stageLogin = useSelector(state => state.login)
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -38,8 +44,8 @@ const App = () => {
           onChange={({target}) => setPassword(target.value)}
         />
 
-        <button> {true ? 'carregando' : 'Enviar'} </button>
-       
+        <button> {stageLogin.token.loading ? 'carregando token' : stageLogin.user.loading ? 'Carregando login' : 'Enviar'} </button>
+       <p> {stageLogin.user.data && `Bem vindo ${stageLogin.user.data?.email}`}</p>
      </form>
      <button onClick={() => dispatch(somar(5))}>Somar</button>
     </div>
